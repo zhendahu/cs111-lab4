@@ -334,7 +334,7 @@ void write_inode_table(int fd) {
 	                              | EXT2_S_IROTH
 	                              | EXT2_S_IXOTH;
 	
-	root_dir_inode.i_uid = 2;
+	root_dir_inode.i_uid = 0;
 	root_dir_inode.i_size = 1024;
 	root_dir_inode.i_atime = current_time;
 	root_dir_inode.i_ctime = current_time;
