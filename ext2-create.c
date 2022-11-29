@@ -323,6 +323,28 @@ void write_inode_table(int fd) {
 
 	/* You should add your 3 other inodes in this function and delete this
 	   comment */
+
+	struct ext2_inode root_dir_inode = {0};
+	root_dir_inode.i_mode = EXT2_S_IFDIR
+	                              | EXT2_S_IRUSR
+	                              | EXT2_S_IWUSR
+	                              | EXT2_S_IXUSR
+	                              | EXT2_S_IRGRP
+	                              | EXT2_S_IXGRP
+	                              | EXT2_S_IROTH
+	                              | EXT2_S_IXOTH;
+	
+	root_dir_inode.i_uid = 2;
+	root_dir_inode.i_size = 1024;
+	root_dir_inode.i_atime = current_time;
+	root_dir_inode.i_ctime = current_time;
+	root_dir_inode.i_mtime = current_time;
+	root_dir_inode.i_dtime = 0;
+	root_dir_inode.i_gid = 0;
+	root_dir_inode.i_links_count = 0;
+	root_dir_inode.i_blocks = 2;
+	root_dir_inode.i_block[0] = ROOT_DIR_BLOCKNO;
+	write_inode(fd, EXT2_ROOT_INO, &root_dir_inode);
 }
 
 void write_root_dir_block(int fd) {
@@ -334,7 +356,7 @@ void write_root_dir_block(int fd) {
 	}
 
 	struct ext2_dir_entry root_entry = {0};
-	dir_entry_set(root_entry, EXT2_ROOT_INO, ".");
+	dir_entry_set(root_entry, EXT2_ROOT_INO, "..");
 	dir_entry_write(root_entry, fd);
 	
 }
