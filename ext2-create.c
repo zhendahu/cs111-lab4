@@ -355,10 +355,14 @@ void write_root_dir_block(int fd) {
 		errno_exit("lseek");
 	}
 
-	struct ext2_dir_entry root_entry = {0};
-	dir_entry_set(root_entry, EXT2_ROOT_INO, "..");
-	dir_entry_write(root_entry, fd);
+	ssize_t bytes_remaining = BLOCK_SIZE;
+
+	struct ext2_dir_entry current_entry = {0};
+	dir_entry_set(current_entry, EXT2_ROOT_INO, ".");
+	dir_entry_write(current_entry, fd);
 	
+	bytes_remaining -= current_entry.rec_len;
+
 }
 
 void write_lost_and_found_dir_block(int fd) {
