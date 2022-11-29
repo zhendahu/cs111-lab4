@@ -182,7 +182,7 @@ u32 get_current_time() {
 	time_t t = time(NULL);
 	if (t == ((time_t) -1)) {
 		errno_exit("time");
-	}
+	} 
 	return t;
 }
 
@@ -259,13 +259,14 @@ void write_block_group_descriptor_table(int fd) {
 
 	struct ext2_block_group_descriptor block_group_descriptor = {0};
 
+	
 	/* These are intentionally incorrectly set as 0, you should set them
 	   correctly and delete this comment */
-	block_group_descriptor.bg_block_bitmap = 0;
-	block_group_descriptor.bg_inode_bitmap = 0;
-	block_group_descriptor.bg_inode_table = 0;
-	block_group_descriptor.bg_free_blocks_count = 0;
-	block_group_descriptor.bg_free_inodes_count = 0;
+	block_group_descriptor.bg_block_bitmap = BLOCK_BITMAP_BLOCKNO;
+	block_group_descriptor.bg_inode_bitmap = INODE_BITMAP_BLOCKNO;
+	block_group_descriptor.bg_inode_table = INODE_TABLE_BLOCKNO;
+	block_group_descriptor.bg_free_blocks_count = NUM_FREE_BLOCKS;
+	block_group_descriptor.bg_free_inodes_count = NUM_FREE_INODES;
 	block_group_descriptor.bg_used_dirs_count = 0;
 
 	ssize_t size = sizeof(block_group_descriptor);
@@ -298,7 +299,7 @@ void write_inode(int fd, u32 index, struct ext2_inode *inode) {
 
 void write_inode_table(int fd) {
 	u32 current_time = get_current_time();
-
+ 
 	struct ext2_inode lost_and_found_inode = {0};
 	lost_and_found_inode.i_mode = EXT2_S_IFDIR
 	                              | EXT2_S_IRUSR
