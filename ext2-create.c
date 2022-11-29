@@ -327,6 +327,13 @@ void write_inode_table(int fd) {
 
 void write_root_dir_block(int fd) {
 	/* This is all you */
+	off_t off = BLOCK_OFFSET(ROOT_DIR_BLOCKNO);
+	off = lseek(fd, off, SEEK_SET);
+	if (off == -1){
+		errno_exit("lseek");
+	}
+
+	
 }
 
 void write_lost_and_found_dir_block(int fd) {
