@@ -372,7 +372,7 @@ void write_inode_table(int fd) {
 	write_inode(fd, HELLO_WORLD_INO, &hello_world_inode);
 
 	struct ext2_inode hello_inode = {0};
-	hello_world_inode.i_mode = EXT2_S_IFLNK
+	hello_inode.i_mode = EXT2_S_IFLNK
 	                              | EXT2_S_IRUSR
 	                              | EXT2_S_IWUSR
 	                              | EXT2_S_IRGRP
@@ -390,7 +390,6 @@ void write_inode_table(int fd) {
 	hello_inode.i_block[1] = 0x6F772D6F; // ow-o
 	hello_inode.i_block[2] = 0x00646C72; // \0dlr
 	write_inode(fd, HELLO_INO, &hello_inode);
-	
 }
 
 void write_root_dir_block(int fd) {
