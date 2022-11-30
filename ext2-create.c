@@ -43,6 +43,7 @@ typedef int32_t i32;
 #define EXT2_ERROR_FS 2
 #define EXT2_ERRORS_CONTINUE 1
 #define EXT2_CHECKINTERVAL 1
+#define EXT2_MAX_MNT_COUNT -1
 
 /* http://www.nongnu.org/ext2-doc/ext2.html */
 /* http://www.science.smith.edu/~nhowe/262/oldlabs/ext2.html */
@@ -218,7 +219,7 @@ void write_superblock(int fd) {
 	superblock.s_mtime             = 0; /* Mount time */
 	superblock.s_wtime             = current_time; /* Write time */
 	superblock.s_mnt_count         = 0; /* Number of times mounted so far */
-	superblock.s_max_mnt_count     = 0; /* Make this unlimited */
+	superblock.s_max_mnt_count     = EXT2_MAX_MNT_COUNT; /* Make this unlimited */
 	superblock.s_magic             = EXT2_SUPER_MAGIC; /* ext2 Signature */
 	superblock.s_state             = EXT2_VALID_FS; /* File system is clean */
 	superblock.s_errors            = EXT2_ERRORS_CONTINUE; /* Ignore the error (continue on) */
