@@ -82,7 +82,7 @@ typedef int32_t i32;
 
 #define EXT2_NAME_LEN 255
 
-#define USED_DIRS_COUNT 3
+#define USED_DIRS_COUNT 2
 
 struct ext2_superblock {
 	u32 s_inodes_count;
