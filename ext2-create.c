@@ -284,6 +284,21 @@ void write_block_group_descriptor_table(int fd) {
 
 void write_block_bitmap(int fd) {
 	/* This is all you */
+
+	// block bitmap starts at block 1 (bit 0 refers to block 1)
+	// bit 1022 refers to block 1023
+	// bit 1023 marked as a 1
+	int bitmap[1024]; 
+
+	for(int i = 0; i < 2; i++){
+		bitmap[i] = 0b11111111;
+	}
+
+	bitmap[2] = 0b01111111;
+
+	for(int i = 3; i < 1024; i++){
+		bitmap[i] = 0;
+	}
 }
 
 void write_inode_bitmap(int fd) {
