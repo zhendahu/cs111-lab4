@@ -526,7 +526,7 @@ void write_hello_world_file_block(int fd) {
 
 	ssize_t bytes_remaining = BLOCK_SIZE;
 
-	char* str = "Hello world\n";
+	char str[12] = "Hello world\n";
 	ssize_t size = sizeof(str);
 	bytes_remaining -= size;
 	if (write(fd, &str, size) != size) {
