@@ -203,8 +203,6 @@ void write_superblock(int fd) {
 
 	struct ext2_superblock superblock = {0};
 
-	/* These are intentionally incorrectly set as 0, you should set them
-	   correctly and delete this comment */
 	superblock.s_inodes_count      = NUM_INODES;
 	superblock.s_blocks_count      = NUM_BLOCKS;
 	superblock.s_r_blocks_count    = 0;
@@ -231,8 +229,6 @@ void write_superblock(int fd) {
 	superblock.s_def_resuid        = 0; /* root */
 	superblock.s_def_resgid        = 0; /* root */
 
-	/* You can leave everything below this line the same, delete this
-	   comment when you're done the lab */
 	superblock.s_uuid[0] = 0x5A;
 	superblock.s_uuid[1] = 0x1E;
 	superblock.s_uuid[2] = 0xAB;
@@ -266,9 +262,6 @@ void write_block_group_descriptor_table(int fd) {
 
 	struct ext2_block_group_descriptor block_group_descriptor = {0};
 
-	
-	/* These are intentionally incorrectly set as 0, you should set them
-	   correctly and delete this comment */
 	block_group_descriptor.bg_block_bitmap = BLOCK_BITMAP_BLOCKNO;
 	block_group_descriptor.bg_inode_bitmap = INODE_BITMAP_BLOCKNO;
 	block_group_descriptor.bg_inode_table = INODE_TABLE_BLOCKNO;
@@ -385,9 +378,6 @@ void write_inode_table(int fd) {
 	lost_and_found_inode.i_blocks = 2; /* These are oddly 512 blocks */
 	lost_and_found_inode.i_block[0] = LOST_AND_FOUND_DIR_BLOCKNO;
 	write_inode(fd, LOST_AND_FOUND_INO, &lost_and_found_inode);
-
-	/* You should add your 3 other inodes in this function and delete this
-	   comment */
 
 	struct ext2_inode root_dir_inode = {0};
 	root_dir_inode.i_mode = EXT2_S_IFDIR
