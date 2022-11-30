@@ -285,7 +285,7 @@ void write_block_group_descriptor_table(int fd) {
 void write_block_bitmap(int fd) {
 	/* This is all you */
 	
-	off_t off = lseek(fd, BLOCK_BITMAP_BLOCKNO, SEEK_SET);
+	off_t off = lseek(fd, BLOCK_OFFSET(BLOCK_BITMAP_BLOCKNO), SEEK_SET);
 	if (off == -1) {
 		errno_exit("lseek");
 	}
