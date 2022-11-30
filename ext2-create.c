@@ -293,7 +293,7 @@ void write_block_bitmap(int fd) {
 	// block bitmap starts at block 1 (bit 0 refers to block 1)
 	// bit 1022 refers to block 1023
 	// bit 1023 marked as a 1
-	int bitmap[128]; 
+	int bitmap[1024]; 
 
 	for(int i = 0; i < 2; i++){
 		bitmap[i] = 0b11111111;
@@ -301,8 +301,12 @@ void write_block_bitmap(int fd) {
 
 	bitmap[2] = 0b01111111;
 
-	for(int i = 3; i < 128; i++){
+	for(int i = 3; i < 126; i++){
 		bitmap[i] = 0b00000000;
+	}
+
+	for(int i = 128; i < 1024; i++){
+		bitmap[i] = 0b11111111;
 	}
 
 	ssize_t size = sizeof(bitmap);
