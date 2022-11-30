@@ -284,6 +284,11 @@ void write_block_group_descriptor_table(int fd) {
 
 void write_block_bitmap(int fd) {
 	/* This is all you */
+	
+	off_t off = lseek(fd, BLOCK_BITMAP_BLOCKNO, SEEK_SET);
+	if (off == -1) {
+		errno_exit("lseek");
+	}
 
 	// block bitmap starts at block 1 (bit 0 refers to block 1)
 	// bit 1022 refers to block 1023
@@ -299,6 +304,12 @@ void write_block_bitmap(int fd) {
 	for(int i = 3; i < 1024; i++){
 		bitmap[i] = 0;
 	}
+
+	ssize_t size = sizeof(bitmap);
+	if (write(fd, &bitmap, size) != size) {
+		errno_exit("write");
+	}
+
 }
 
 void write_inode_bitmap(int fd) {
