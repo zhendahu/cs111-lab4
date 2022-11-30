@@ -389,7 +389,7 @@ void write_inode_table(int fd) {
 	hello_inode.i_block[0] = 0x6C6C6568; // lleh
 	hello_inode.i_block[1] = 0x6F772D6F; // ow-o
 	hello_inode.i_block[2] = 0x00646C72; // \0dlr
-	write_inode(fd, HELLO_WORLD_INO, &hello_world_inode);
+	write_inode(fd, HELLO_INO, &hello_inode);
 	
 }
 
