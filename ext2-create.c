@@ -77,6 +77,8 @@ typedef int32_t i32;
 
 #define EXT2_NAME_LEN 255
 
+#define USED_DIRS_COUNT 2
+
 struct ext2_superblock {
 	u32 s_inodes_count;
 	u32 s_blocks_count;
@@ -267,7 +269,7 @@ void write_block_group_descriptor_table(int fd) {
 	block_group_descriptor.bg_inode_table = INODE_TABLE_BLOCKNO;
 	block_group_descriptor.bg_free_blocks_count = NUM_FREE_BLOCKS;
 	block_group_descriptor.bg_free_inodes_count = NUM_FREE_INODES;
-	block_group_descriptor.bg_used_dirs_count = 0;
+	block_group_descriptor.bg_used_dirs_count = USED_DIRS_COUNT;
 
 	ssize_t size = sizeof(block_group_descriptor);
 	if (write(fd, &block_group_descriptor, size) != size) {
@@ -341,7 +343,7 @@ void write_inode_table(int fd) {
 	root_dir_inode.i_mtime = current_time;
 	root_dir_inode.i_dtime = 0;
 	root_dir_inode.i_gid = 0;
-	root_dir_inode.i_links_count = 0;
+	root_dir_inode.i_links_count = 3;
 	root_dir_inode.i_blocks = 2;
 	root_dir_inode.i_block[0] = ROOT_DIR_BLOCKNO;
 	write_inode(fd, EXT2_ROOT_INO, &root_dir_inode);
@@ -357,16 +359,30 @@ void write_root_dir_block(int fd) {
 
 	ssize_t bytes_remaining = BLOCK_SIZE;
 
+	struct ext2_dir_entry parent_entry = {0};
+	dir_entry_set(parent_entry, EXT2_ROOT_INO, "..");
+	dir_entry_write(parent_entry, fd);
+	bytes_remaining -= parent_entry.rec_len;
+
 	struct ext2_dir_entry current_entry = {0};
 	dir_entry_set(current_entry, EXT2_ROOT_INO, ".");
 	dir_entry_write(current_entry, fd);
-	
 	bytes_remaining -= current_entry.rec_len;
 
-	struct ext2_dir_entry fill_entry = {0};
-	fill_entry.rec_len = bytes_remaining;
-	dir_entry_write(fill_entry, fd);
+	struct ext2_dir_entry hello_entry = {0};
+	dir_entry_set(hello_entry, HELLO_INO, "hello");
+	dir_entry_write(hello_entry, fd);
+	bytes_remaining -= hello_entry.rec_len;
 
+	struct ext2_dir_entry hello_world_entry = {0};
+	dir_entry_set(hello_world_entry, HELLO_WORLD_INO, "hello-world");
+	dir_entry_write(hello_world_entry, fd);
+	bytes_remaining -= hello_world_entry.rec_len;
+
+	struct ext2_dir_entry lost_found_entry = {0};
+	dir_entry_set(lost_found_entry, LOST_AND_FOUND_INO, "lost+found");
+	dir_entry_write(lost_found_entry, fd);
+	bytes_remaining -= lost_found_entry.rec_len;                                 
 }
 
 void write_lost_and_found_dir_block(int fd) {
