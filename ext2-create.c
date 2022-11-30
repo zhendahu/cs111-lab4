@@ -543,6 +543,10 @@ void write_hello_world_file_block(int fd) {
 	if (write(fd, &str, size) != size) {
 		errno_exit("write");
 	}
+
+	struct ext2_dir_entry fill_entry = {0};
+	fill_entry.rec_len = bytes_remaining;
+	dir_entry_write(fill_entry, fd);
 }
 
 int main(int argc, char *argv[]) {
