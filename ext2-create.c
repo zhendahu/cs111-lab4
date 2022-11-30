@@ -406,7 +406,7 @@ void write_inode_table(int fd) {
 	root_dir_inode.i_mtime = current_time;
 	root_dir_inode.i_dtime = 0;
 	root_dir_inode.i_gid = 0;
-	root_dir_inode.i_links_count = 4;
+	root_dir_inode.i_links_count = 3;
 	root_dir_inode.i_blocks = 2;
 	root_dir_inode.i_block[0] = ROOT_DIR_BLOCKNO;
 	write_inode(fd, EXT2_ROOT_INO, &root_dir_inode);
@@ -424,7 +424,7 @@ void write_inode_table(int fd) {
 	hello_world_inode.i_ctime = current_time;
 	hello_world_inode.i_dtime = 0;
 	hello_world_inode.i_gid = 1000;
-	hello_world_inode.i_links_count = 2;
+	hello_world_inode.i_links_count = 1;
 	hello_world_inode.i_blocks = 2;
 	hello_world_inode.i_block[0] = HELLO_WORLD_FILE_BLOCKNO;
 	write_inode(fd, HELLO_WORLD_INO, &hello_world_inode);
