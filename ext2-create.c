@@ -302,7 +302,7 @@ void write_block_bitmap(int fd) {
 	bitmap[2] = 0b01111111;
 
 	for(int i = 3; i < 1024; i++){
-		bitmap[i] = 0;
+		bitmap[i] = 0b00000000;
 	}
 
 	ssize_t size = sizeof(bitmap);
