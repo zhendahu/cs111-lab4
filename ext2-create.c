@@ -320,6 +320,32 @@ void write_block_bitmap(int fd) {
 
 void write_inode_bitmap(int fd) {
 	/* This is all you */
+	off_t off = lseek(fd, BLOCK_OFFSET(INODE_BITMAP_BLOCKNO), SEEK_SET);
+	if (off == -1) {
+		errno_exit("lseek");
+	}
+
+	// block bitmap starts at block 1 (bit 0 refers to block 1)
+	// bit 1022 refers to block 1023
+	// bit 1023 marked as a 1
+	uint8_t bitmap[1024]; 
+
+	bitmap[0] = 0b11111111;
+	bitmap[1] = 0x00011111;
+	
+	for(int i = 2; i < 16; i++){
+		bitmap[i] = 0b00000000;
+	}
+
+	for(int i = 16; i < BLOCK_SIZE; i++){
+		bitmap[i] = 0b11111111;
+	}
+
+	ssize_t size = sizeof(bitmap);
+	if (write(fd, &bitmap, size) != size) {
+		errno_exit("write");
+	}
+
 }
 
 void write_inode(int fd, u32 index, struct ext2_inode *inode) {
